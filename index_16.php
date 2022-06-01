@@ -1,0 +1,133 @@
+<!-- oop   -->
+<?php
+//OOP
+//  Class and Object
+
+
+
+/**
+ * 
+ */
+class student{
+    
+    protected $name;
+    protected $age;
+    protected $level;
+    protected $score;
+    
+    protected $subject = array(
+      'Arabic'   =>0,
+      'Math'  =>0,
+      'English' =>0,
+       'science' =>0
+    );
+    
+    protected $minscore = 100;
+    protected $maxscore = 200;
+    
+    function __construct($name , $age) {
+        $this->setname($name);
+        $this->setage($age);
+        
+    }
+    private function setname($name){
+        $name = strtolower($name);
+        $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $name = ucwords($name);
+        $name = substr($name,0, 20);
+        $this->name = $name;
+    }
+    
+    public function getname(){
+        return $this->name;
+    }
+    private function setage($age){
+        $age = filter_var($age, FILTER_SANITIZE_NUMBER_INT);
+        $age = abs($age);
+        if($age < 12 || $age > 20){
+            throw new Exception('Sorry HERE');
+        } else {
+            $this->age = $age;
+        }
+    }
+    public function getage(){
+        return $this->age;
+    }
+    
+    public function getSub(){
+        return $this->subject;
+    }
+    
+    public function getMinscore(){
+        return $this->minscore;
+    }
+    public function getMaxscore(){
+        return $this->maxscore;
+    }
+    
+    public function setSubScore($subjectName , $value){
+        if(array_key_exists($subjectName, $this->subject)){
+            $value = filter_var($value , FILTER_SANITIZE_NUMBER_INT);
+            $value = abs($value);
+            if($value > 50){
+                throw new Exception('Sorry max is 50');
+            } else {
+                $this->subject[$subjectName]  = $value;
+                
+            }
+            
+            
+        } else {
+            throw new Exception('Sorry we donthave subject name');
+        }
+    }
+     public function getSubScore($subjectName){
+         if(array_key_exists($subjectName, $this->subject)){
+            
+                return $this->subject[$subjectName];
+            
+        } else {
+            throw new Exception('Sorry we donthave subject name');
+        }
+     }
+    
+    
+}
+
+
+
+/**
+ * 
+ */
+class GradStudent extends student{
+    
+    private $activity;
+
+    public function __construct($name, $age) {
+        
+        parent::__construct($name, $age);
+        $this->minscore = 125;
+        $this->maxscore = 250;
+        $this->subject['Computer'] = 0;
+    }
+    
+    public function setStAsActive(){
+        $this->activity = 'activ';
+    }
+    
+    
+}
+
+
+
+
+
+
+$all  = new GradStudent('Emad Rashad',18);
+echo '<pre>';
+print_r($all->setSubScore('Math' ,40));
+echo $all->getSubScore('Arabic');
+echo '</pre>';
+
+
+?>
